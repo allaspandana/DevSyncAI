@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+
+                <div class="card-header text-center text-white rounded-top-4"
+                     style="background: linear-gradient(135deg,#667eea,#764ba2);">
+
+                    <i class="bi bi-person-circle display-1"></i>
+
+                    <h2 class="mt-2">
+                        Welcome, {{ user.username }}
+                    </h2>
+
+                    <p>
+                        DevSyncAI User Profile
+                    </p>
+
+                </div>
+
+
+
+                <div class="card-body p-4">
+
+
+                    <div class="mb-3">
+
+                        <div class="p-3 bg-light rounded-3">
+
+                            <i class="bi bi-person-fill text-primary"></i>
+
+                            <strong> Username:</strong>
+
+                            {{ user.username }}
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="mb-3">
+
+                        <div class="p-3 bg-light rounded-3">
+
+                            <i class="bi bi-envelope-fill text-success"></i>
+
+                            <strong> Email:</strong>
+
+                            {{ user.email }}
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    <div class="mb-3">
+
+                        <div class="p-3 bg-light rounded-3">
+
+                            <i class="bi bi-shield-fill-check text-danger"></i>
+
+                            <strong> Role:</strong>
+
+                            {{ user.role }}
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <hr>
+
+
+
+                    <div class="text-center">
+
+
+                        <a href="{% url 'logout' %}" 
+                           class="btn btn-danger btn-lg px-5 rounded-pill">
+
+
+                            <i class="bi bi-box-arrow-right"></i>
+
+                            Logout
+
+
+                        </a>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
