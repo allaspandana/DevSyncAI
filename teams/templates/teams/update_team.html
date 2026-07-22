@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <!-- Card Header -->
+                <div class="card-header bg-warning text-dark text-center py-4 rounded-top-4">
+
+                    <h2 class="fw-bold mb-1">Update Team</h2>
+                    <p class="mb-0">Edit your team information</p>
+
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-5">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- Team Name -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Team Name
+                            </label>
+
+                            {{ form.name }}
+
+                            {% if form.name.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.name.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Description
+                            </label>
+
+                            {{ form.description }}
+
+                            {% if form.description.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Team Leader -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Team Leader
+                            </label>
+
+                            {{ form.leader }}
+
+                            {% if form.leader.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.leader.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Members -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Team Members
+                            </label>
+
+                            {{ form.members }}
+
+                            <small class="text-muted">
+                                Hold Ctrl (Windows) or Cmd (Mac) to select multiple members.
+                            </small>
+
+                            {% if form.members.errors %}
+                                <div class="text-danger mt-1">
+                                    {{ form.members.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="text-center">
+
+                            <button type="submit" class="btn btn-warning text-dark px-5 me-3">
+                                Update Team
+                            </button>
+
+                            <a href="{% url 'team_list' %}" class="btn btn-outline-secondary px-5">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+body{
+    background:#f5f7fb;
+}
+
+.card{
+    border-radius:20px;
+}
+
+.form-control,
+.form-select{
+    border-radius:10px;
+    padding:12px;
+}
+
+select{
+    min-height:150px;
+}
+
+.form-control:focus,
+.form-select:focus{
+    border-color:#ffc107;
+    box-shadow:0 0 10px rgba(255,193,7,0.4);
+}
+
+.btn{
+    border-radius:10px;
+    font-weight:bold;
+    padding:10px 30px;
+}
+
+</style>
+
+{% endblock %}

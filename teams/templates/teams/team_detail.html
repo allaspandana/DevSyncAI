@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow-lg border-0">
+
+<div class="card-header bg-info text-white">
+
+<h2>{{ team.name }}</h2>
+
+</div>
+
+<div class="card-body">
+
+<h5 class="text-primary">Description</h5>
+
+<p>{{ team.description }}</p>
+
+<hr>
+
+<h5 class="text-primary">Leader</h5>
+
+<p>
+
+<span class="badge bg-primary">
+
+{{ team.leader }}
+
+</span>
+
+</p>
+
+<hr>
+
+<h5 class="text-primary">
+
+Members
+
+</h5>
+
+<div class="row">
+
+{% for member in team.members.all %}
+
+<div class="col-md-4 mb-3">
+
+<div class="card border-success">
+
+<div class="card-body text-center">
+
+<h6>
+
+{{ member }}
+
+</h6>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p>No Members</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="card-footer">
+
+<a href="{% url 'team_list' %}" class="btn btn-secondary">
+
+Back
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
