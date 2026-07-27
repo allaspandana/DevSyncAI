@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+            Sprint Management
+        </h2>
+
+        <a href="{% url 'create_sprint' %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i>
+            Create Sprint
+        </a>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover table-bordered align-middle">
+
+                <thead class="table-dark">
+
+                <tr>
+
+                    <th>Sprint</th>
+                    <th>Project</th>
+                    <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th width="220">Actions</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for sprint in sprints %}
+
+                <tr>
+
+                    <td>{{ sprint.name }}</td>
+
+                    <td>{{ sprint.project }}</td>
+
+                    <td>
+
+                        {% if sprint.status == "Completed" %}
+
+                        <span class="badge bg-success">
+                            Completed
+                        </span>
+
+                        {% elif sprint.status == "Active" %}
+
+                        <span class="badge bg-primary">
+                            Active
+                        </span>
+
+                        {% elif sprint.status == "Planning" %}
+
+                        <span class="badge bg-warning text-dark">
+                            Planning
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger">
+                            Cancelled
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ sprint.start_date }}</td>
+
+                    <td>{{ sprint.end_date }}</td>
+
+                    <td>
+
+                        <a href="{% url 'sprint_detail' sprint.id %}"
+                           class="btn btn-info btn-sm">
+
+                            View
+
+                        </a>
+
+                        <a href="{% url 'update_sprint' sprint.id %}"
+                           class="btn btn-warning btn-sm">
+
+                            Edit
+
+                        </a>
+
+                        <a href="{% url 'delete_sprint' sprint.id %}"
+                           class="btn btn-danger btn-sm">
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="text-center">
+
+                        No Sprints Found
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
