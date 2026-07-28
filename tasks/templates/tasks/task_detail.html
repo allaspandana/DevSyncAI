@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-info text-white">
+
+<h3>Task Details</h3>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+
+<th width="30%">Task Title</th>
+
+<td>{{ task.title }}</td>
+
+</tr>
+
+<tr>
+
+<th>Description</th>
+
+<td>{{ task.description }}</td>
+
+</tr>
+
+<tr>
+
+<th>Sprint</th>
+
+<td>{{ task.sprint }}</td>
+
+</tr>
+
+<tr>
+
+<th>Assigned To</th>
+
+<td>{{ task.assigned_to }}</td>
+
+</tr>
+
+<tr>
+
+<th>Status</th>
+
+<td>{{ task.status }}</td>
+
+</tr>
+
+<tr>
+
+<th>Priority</th>
+
+<td>{{ task.priority }}</td>
+
+</tr>
+
+<tr>
+
+<th>Due Date</th>
+
+<td>{{ task.due_date }}</td>
+
+</tr>
+
+<tr>
+
+<th>Estimated Hours</th>
+
+<td>{{ task.estimated_hours }}</td>
+
+</tr>
+
+<tr>
+
+<th>Created At</th>
+
+<td>{{ task.created_at }}</td>
+
+</tr>
+
+</table>
+
+<a href="{% url 'update_task' task.id %}" class="btn btn-warning">
+
+Edit
+
+</a>
+
+<a href="{% url 'task_list' %}" class="btn btn-secondary">
+
+Back
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
