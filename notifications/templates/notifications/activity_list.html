@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-info text-white">
+
+            <h3>Activity Log</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>User</th>
+
+                        <th>Action</th>
+
+                        <th>Model</th>
+
+                        <th>Object</th>
+
+                        <th>Time</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for activity in activities %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ activity.user }}
+
+                        </td>
+
+                        <td>
+
+                            {{ activity.action }}
+
+                        </td>
+
+                        <td>
+
+                            {{ activity.model_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ activity.object_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ activity.created_at }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5" class="text-center">
+
+                            No Activity Found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
