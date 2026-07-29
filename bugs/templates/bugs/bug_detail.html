@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-info text-white">
+
+            <h3>Bug Details</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>Title</th>
+                    <td>{{ bug.title }}</td>
+                </tr>
+
+                <tr>
+                    <th>Task</th>
+                    <td>{{ bug.task }}</td>
+                </tr>
+
+                <tr>
+                    <th>Assigned To</th>
+                    <td>{{ bug.assigned_to }}</td>
+                </tr>
+
+                <tr>
+                    <th>Description</th>
+                    <td>{{ bug.description }}</td>
+                </tr>
+
+                <tr>
+                    <th>Severity</th>
+                    <td>{{ bug.severity }}</td>
+                </tr>
+
+                <tr>
+                    <th>Priority</th>
+                    <td>{{ bug.priority }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>{{ bug.status }}</td>
+                </tr>
+
+                <tr>
+                    <th>Reported By</th>
+                    <td>{{ bug.reported_by }}</td>
+                </tr>
+
+                <tr>
+                    <th>Reported Date</th>
+                    <td>{{ bug.reported_date }}</td>
+                </tr>
+
+                <tr>
+                    <th>Resolved Date</th>
+                    <td>{{ bug.resolved_date }}</td>
+                </tr>
+
+            </table>
+
+            <a href="{% url 'bug_list' %}"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Bug List</h2>
+
+        <a href="{% url 'create_bug' %}" class="btn btn-primary">
+            + Create Bug
+        </a>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Bug</th>
+                <th>Task</th>
+                <th>Severity</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th width="220">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for bug in bugs %}
+
+            <tr>
+
+                <td>{{ bug.title }}</td>
+
+                <td>{{ bug.task }}</td>
+
+                <td>{{ bug.severity }}</td>
+
+                <td>{{ bug.priority }}</td>
+
+                <td>{{ bug.status }}</td>
+
+                <td>{{ bug.assigned_to }}</td>
+
+                <td>
+
+                    <a href="{% url 'bug_detail' bug.id %}"
+                       class="btn btn-info btn-sm">
+                        View
+                    </a>
+
+                    <a href="{% url 'update_bug' bug.id %}"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'delete_bug' bug.id %}"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="7" class="text-center">
+                    No Bugs Found
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
