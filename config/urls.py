@@ -26,6 +26,7 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
     path('bugs/', include('bugs.urls')),
     path('notifications/',include('notifications.urls')),
+    path('dashboards/',include('dashboard.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
