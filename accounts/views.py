@@ -104,8 +104,11 @@ def logout_view(request):
     )
 
     return redirect("login")
+def profile(request):
+    return render(request, "profile/profile.html")
 
-
+def home(request):
+    return render(request, "home.html")
 @login_required(login_url="login")
 def dashboard(request):
     total_teams = Team.objects.count()
