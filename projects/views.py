@@ -1,18 +1,36 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.db.models import Q
+from django.core.paginator import Paginator
 from .models import Project
 from .forms import ProjectForm
 @login_required
+
 def project_list(request):
 
     projects = Project.objects.all()
 
-    return render(request,
-                  'projects/project_list.html',
-                  {'projects': projects})
-@login_required
+    search = request.GET.get('search')
+
+    if search:
+        projects = projects.filter(
+            Q(name__icontains=search) |
+            Q(description__icontains=search)
+        )
+
+    paginator = Paginator(projects, 10)
+
+    page_number = request.GET.get('page')
+
+    projects = paginator.get_page(page_number)
+
+    context = {
+        'projects': projects,
+        'search': search,
+    }
+
+    return render(request, 'projects/project_list.html', context)
 def create_project(request):
 
     if request.method == 'POST':
