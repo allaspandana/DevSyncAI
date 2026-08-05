@@ -4,81 +4,572 @@
 
 <div class="container mt-4">
 
+
     <div class="d-flex justify-content-between align-items-center mb-3">
+
+
         <h2>Bug List</h2>
 
+
         <a href="{% url 'create_bug' %}" class="btn btn-primary">
+
             + Create Bug
+
         </a>
+
+
     </div>
+
+
+
+
+
+    <!-- Search and Filter Form -->
+
+
+    <form method="GET" class="row g-3 mb-4">
+
+
+
+        <div class="col-md-3">
+
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search Bug"
+                value="{{ request.GET.search }}">
+
+
+        </div>
+
+
+
+
+
+        <div class="col-md-2">
+
+
+            <select name="severity" class="form-select">
+
+
+                <option value="">
+                    All Severity
+                </option>
+
+
+
+                <option value="Low"
+                {% if request.GET.severity == "Low" %}selected{% endif %}>
+
+                    Low
+
+                </option>
+
+
+
+                <option value="Medium"
+                {% if request.GET.severity == "Medium" %}selected{% endif %}>
+
+                    Medium
+
+                </option>
+
+
+
+                <option value="High"
+                {% if request.GET.severity == "High" %}selected{% endif %}>
+
+                    High
+
+                </option>
+
+
+
+                <option value="Critical"
+                {% if request.GET.severity == "Critical" %}selected{% endif %}>
+
+                    Critical
+
+                </option>
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="col-md-2">
+
+
+            <select name="status" class="form-select">
+
+
+                <option value="">
+                    All Status
+                </option>
+
+
+
+                <option value="Open"
+                {% if request.GET.status == "Open" %}selected{% endif %}>
+
+                    Open
+
+                </option>
+
+
+
+                <option value="Resolved"
+                {% if request.GET.status == "Resolved" %}selected{% endif %}>
+
+                    Resolved
+
+                </option>
+
+
+
+                <option value="Closed"
+                {% if request.GET.status == "Closed" %}selected{% endif %}>
+
+                    Closed
+
+                </option>
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="col-md-3">
+
+
+            <select name="assigned" class="form-select">
+
+
+                <option value="">
+                    All Developers
+                </option>
+
+
+
+                {% for user in users %}
+
+
+                <option value="{{ user.id }}"
+                {% if request.GET.assigned == user.id|stringformat:"s" %}selected{% endif %}>
+
+
+                    {{ user.username }}
+
+
+                </option>
+
+
+                {% endfor %}
+
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="col-md-2">
+
+
+            <button type="submit" class="btn btn-primary w-100">
+
+
+                Search
+
+
+            </button>
+
+
+        </div>
+
+
+
+    </form>
+
+
+
+
+
+
+
+
+
+    {% if bugs %}
+
+
+
+
+
+
+
+    <!-- Bug Table -->
+
 
     <table class="table table-bordered table-hover table-striped">
 
+
         <thead class="table-dark">
+
+
             <tr>
+
+
                 <th>Bug</th>
-                <th>Task</th>
+
                 <th>Severity</th>
-                <th>Priority</th>
+
                 <th>Status</th>
+
                 <th>Assigned To</th>
+
                 <th width="220">Actions</th>
+
+
             </tr>
+
+
         </thead>
+
+
+
+
 
         <tbody>
 
-            {% for bug in bugs %}
+
+
+        {% for bug in bugs %}
+
+
+
+
 
             <tr>
 
-                <td>{{ bug.title }}</td>
 
-                <td>{{ bug.task }}</td>
 
-                <td>{{ bug.severity }}</td>
-
-                <td>{{ bug.priority }}</td>
-
-                <td>{{ bug.status }}</td>
-
-                <td>{{ bug.assigned_to }}</td>
 
                 <td>
 
+                    {{ bug.title }}
+
+                </td>
+
+
+
+
+
+                <td>
+
+                    {{ bug.severity }}
+
+                </td>
+
+
+
+
+
+                <td>
+
+
+                    <span class="badge bg-success">
+
+                        {{ bug.status }}
+
+                    </span>
+
+
+                </td>
+
+
+
+
+
+                <td>
+
+                    {{ bug.assigned_to }}
+
+                </td>
+
+
+
+
+
+                <td>
+
+
+
+
                     <a href="{% url 'bug_detail' bug.id %}"
                        class="btn btn-info btn-sm">
+
+
                         View
+
+
                     </a>
+
+
+
+
 
                     <a href="{% url 'update_bug' bug.id %}"
                        class="btn btn-warning btn-sm">
+
+
                         Edit
+
+
                     </a>
+
+
+
+
 
                     <a href="{% url 'delete_bug' bug.id %}"
                        class="btn btn-danger btn-sm">
+
+
                         Delete
+
+
                     </a>
 
+
+
+
+
                 </td>
+
+
+
 
             </tr>
 
-            {% empty %}
 
-            <tr>
-                <td colspan="7" class="text-center">
-                    No Bugs Found
-                </td>
-            </tr>
 
-            {% endfor %}
+
+
+        {% endfor %}
+
+
+
 
         </tbody>
 
+
+
     </table>
 
+
+
+
+
+
+
+
+
+    <!-- UPDATED PAGINATION -->
+
+
+    <nav class="mt-4">
+
+
+        <ul class="pagination justify-content-center">
+
+
+
+            {% if bugs.has_previous %}
+
+
+            <li class="page-item">
+
+
+                <a class="page-link"
+                href="?page={{ bugs.previous_page_number }}&search={{ request.GET.search }}&severity={{ request.GET.severity }}&status={{ request.GET.status }}&assigned={{ request.GET.assigned }}">
+
+
+                    Previous
+
+
+                </a>
+
+
+            </li>
+
+
+            {% else %}
+
+
+
+            <li class="page-item disabled">
+
+
+                <span class="page-link">
+
+                    Previous
+
+                </span>
+
+
+            </li>
+
+
+
+            {% endif %}
+
+
+
+
+
+
+
+
+            {% for num in bugs.paginator.page_range %}
+
+
+
+
+                {% if bugs.number == num %}
+
+
+
+
+                <li class="page-item active">
+
+
+                    <span class="page-link">
+
+                        {{ num }}
+
+                    </span>
+
+
+                </li>
+
+
+
+
+                {% else %}
+
+
+
+
+                <li class="page-item">
+
+
+                    <a class="page-link"
+                    href="?page={{ num }}&search={{ request.GET.search }}&severity={{ request.GET.severity }}&status={{ request.GET.status }}&assigned={{ request.GET.assigned }}">
+
+
+                        {{ num }}
+
+
+                    </a>
+
+
+                </li>
+
+
+
+
+                {% endif %}
+
+
+
+
+            {% endfor %}
+
+
+
+
+
+
+
+
+
+            {% if bugs.has_next %}
+
+
+
+
+            <li class="page-item">
+
+
+                <a class="page-link"
+                href="?page={{ bugs.next_page_number }}&search={{ request.GET.search }}&severity={{ request.GET.severity }}&status={{ request.GET.status }}&assigned={{ request.GET.assigned }}">
+
+
+                    Next
+
+
+                </a>
+
+
+            </li>
+
+
+
+
+            {% else %}
+
+
+
+
+            <li class="page-item disabled">
+
+
+                <span class="page-link">
+                    Next
+                </span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <div class="alert alert-warning text-center mt-4">
+
+
+        <h5>No Bugs Found</h5>
+
+
+        <p>
+
+            Try changing your search keyword or filters.
+
+        </p>
+
+    </div>
+    {% endif %}
 </div>
+
 
 {% endblock %}

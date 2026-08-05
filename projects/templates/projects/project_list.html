@@ -4,77 +4,415 @@
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between mb-3">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
         <h2>Projects</h2>
 
         <a href="{% url 'create_project' %}" class="btn btn-primary">
             Create Project
         </a>
+
     </div>
+
+
+
+    <!-- Search & Filter Form -->
+
+    <form method="GET" class="row g-3 mb-4">
+
+
+        <div class="col-md-4">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search Project"
+                value="{{ request.GET.search }}">
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <select name="status" class="form-select">
+
+                <option value="">
+                    All Status
+                </option>
+
+
+                <option value="Planning"
+                {% if request.GET.status == "Planning" %}selected{% endif %}>
+                    Planning
+                </option>
+
+
+                <option value="In Progress"
+                {% if request.GET.status == "In Progress" %}selected{% endif %}>
+                    In Progress
+                </option>
+
+
+                <option value="Completed"
+                {% if request.GET.status == "Completed" %}selected{% endif %}>
+                    Completed
+                </option>
+
+
+                <option value="On Hold"
+                {% if request.GET.status == "On Hold" %}selected{% endif %}>
+                    On Hold
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+
+
+        <div class="col-md-3">
+
+            <select name="priority" class="form-select">
+
+
+                <option value="">
+                    All Priority
+                </option>
+
+
+                <option value="Low"
+                {% if request.GET.priority == "Low" %}selected{% endif %}>
+                    Low
+                </option>
+
+
+                <option value="Medium"
+                {% if request.GET.priority == "Medium" %}selected{% endif %}>
+                    Medium
+                </option>
+
+
+                <option value="High"
+                {% if request.GET.priority == "High" %}selected{% endif %}>
+                    High
+                </option>
+
+
+                <option value="Critical"
+                {% if request.GET.priority == "Critical" %}selected{% endif %}>
+                    Critical
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+
+        <div class="col-md-2">
+
+            <button type="submit" class="btn btn-primary w-100">
+
+                Search
+
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+
+
+
+
+    {% if projects %}
+
+
 
     <table class="table table-bordered table-hover">
 
+
         <thead class="table-dark">
+
+
             <tr>
-                <th>Project</th>
+
+                <th>Name</th>
                 <th>Team</th>
-                <th>Manager</th>
                 <th>Status</th>
                 <th>Priority</th>
+                <th>Manager</th>
                 <th>Actions</th>
+
             </tr>
+
+
         </thead>
+
+
+
 
         <tbody>
 
+
         {% for project in projects %}
+
 
             <tr>
 
-                <td>{{ project.name }}</td>
 
-                <td>{{ project.team }}</td>
+                <td>
+                    {{ project.name }}
+                </td>
 
-                <td>{{ project.manager }}</td>
 
-                <td>{{ project.status }}</td>
+                <td>
+                    {{ project.team }}
+                </td>
 
-                <td>{{ project.priority }}</td>
+
+                <td>
+                    {{ project.status }}
+                </td>
+
+
+                <td>
+                    {{ project.priority }}
+                </td>
+
+
+                <td>
+                    {{ project.manager }}
+                </td>
+
 
                 <td>
 
-                    <a href="{% url 'project_detail' project.id %}" class="btn btn-info btn-sm">
+
+                    <a href="{% url 'project_detail' project.id %}"
+                    class="btn btn-info btn-sm">
+
                         View
+
                     </a>
 
-                    <a href="{% url 'update_project' project.id %}" class="btn btn-warning btn-sm">
+
+
+                    <a href="{% url 'update_project' project.id %}"
+                    class="btn btn-warning btn-sm">
+
                         Edit
+
                     </a>
 
-                    <a href="{% url 'delete_project' project.id %}" class="btn btn-danger btn-sm">
+
+
+                    <a href="{% url 'delete_project' project.id %}"
+                    class="btn btn-danger btn-sm">
+
                         Delete
+
                     </a>
 
+
                 </td>
+
 
             </tr>
 
-        {% empty %}
-
-            <tr>
-
-                <td colspan="6" class="text-center">
-                    No Projects Available
-                </td>
-
-            </tr>
 
         {% endfor %}
 
+
         </tbody>
+
 
     </table>
 
+
+
+
+
+
+    <!-- Pagination -->
+
+
+    <nav>
+
+        <ul class="pagination justify-content-center">
+
+
+
+            {% if projects.has_previous %}
+
+            <li class="page-item">
+
+                <a class="page-link"
+                href="?page={{ projects.previous_page_number }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">
+
+                    Previous
+
+                </a>
+
+            </li>
+
+
+            {% else %}
+
+
+            <li class="page-item disabled">
+
+                <span class="page-link">
+
+                    Previous
+
+                </span>
+
+            </li>
+
+
+            {% endif %}
+
+
+
+
+
+            {% for num in projects.paginator.page_range %}
+
+
+
+                {% if projects.number == num %}
+
+
+                <li class="page-item active">
+
+
+                    <span class="page-link">
+
+                        {{ num }}
+
+                    </span>
+
+
+                </li>
+
+
+
+                {% else %}
+
+
+
+                <li class="page-item">
+
+
+                    <a class="page-link"
+                    href="?page={{ num }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">
+
+                        {{ num }}
+
+                    </a>
+
+
+                </li>
+
+
+
+                {% endif %}
+
+
+
+            {% endfor %}
+
+
+
+
+
+
+            {% if projects.has_next %}
+
+
+            <li class="page-item">
+
+
+                <a class="page-link"
+                href="?page={{ projects.next_page_number }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">
+
+                    Next
+
+                </a>
+
+
+            </li>
+
+
+
+            {% else %}
+
+
+
+            <li class="page-item disabled">
+
+
+                <span class="page-link">
+
+                    Next
+
+                </span>
+
+
+            </li>
+
+
+
+            {% endif %}
+
+
+
+
+        </ul>
+
+
+    </nav>
+
+
+
+
+
+
+
+    {% else %}
+
+
+
+    <div class="alert alert-warning text-center mt-4">
+
+
+        <h5>No Projects Found</h5>
+
+
+        <p>
+            Try searching with another keyword or change filters.
+        </p>
+
+
+    </div>
+
+
+
+    {% endif %}
+
+
+
+
 </div>
+
 
 {% endblock %}

@@ -4,111 +4,563 @@
 
 <div class="container mt-4">
 
+
     <div class="d-flex justify-content-between mb-3">
+
         <h2>Task List</h2>
 
         <a href="{% url 'create_task' %}" class="btn btn-primary">
             + Create Task
         </a>
+
     </div>
 
+
+
+
     {% if messages %}
+
         {% for message in messages %}
+
         <div class="alert alert-success">
             {{ message }}
         </div>
+
         {% endfor %}
+
     {% endif %}
 
-    <div class="card shadow">
 
-        <div class="card-body">
 
-            <table class="table table-bordered table-hover text-center">
 
-                <thead class="table-dark">
 
-                <tr>
 
-                    <th>Task</th>
-                    <th>Sprint</th>
-                    <th>Assigned To</th>
-                    <th>Priority</th>
-                    <th>Status</th>
-                    <th>Due Date</th>
-                    <th>Estimated Hours</th>
-                    <th>Actions</th>
+    <!-- Search and Filter Form -->
 
-                </tr>
+    <form method="GET" class="row g-3 mb-4">
 
-                </thead>
 
-                <tbody>
 
-                {% for task in tasks %}
+        <div class="col-md-3">
 
-                <tr>
-
-                    <td>{{ task.title }}</td>
-
-                    <td>{{ task.sprint }}</td>
-
-                    <td>{{ task.assigned_to }}</td>
-
-                    <td>
-                        <span class="badge bg-danger">
-                            {{ task.priority }}
-                        </span>
-                    </td>
-
-                    <td>
-                        <span class="badge bg-success">
-                            {{ task.status }}
-                        </span>
-                    </td>
-
-                    <td>{{ task.due_date }}</td>
-
-                    <td>{{ task.estimated_hours }}</td>
-
-                    <td>
-
-                        <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">
-                            View
-                        </a>
-
-                        <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">
-                            Edit
-                        </a>
-
-                        <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">
-                            Delete
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-
-                    <td colspan="8">
-                        No Tasks Found
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-                </tbody>
-
-            </table>
+            <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search Task"
+            value="{{ request.GET.search }}">
 
         </div>
 
-    </div>
+
+
+
+
+        <div class="col-md-2">
+
+
+            <select name="status" class="form-select">
+
+
+                <option value="">
+                    All Status
+                </option>
+
+
+                <option value="To Do"
+                {% if request.GET.status == "To Do" %}selected{% endif %}>
+                    To Do
+                </option>
+
+
+
+                <option value="In Progress"
+                {% if request.GET.status == "In Progress" %}selected{% endif %}>
+                    In Progress
+                </option>
+
+
+
+                <option value="Completed"
+                {% if request.GET.status == "Completed" %}selected{% endif %}>
+                    Completed
+                </option>
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="col-md-2">
+
+
+            <select name="priority" class="form-select">
+
+
+                <option value="">
+                    All Priority
+                </option>
+
+
+
+                <option value="Low"
+                {% if request.GET.priority == "Low" %}selected{% endif %}>
+                    Low
+                </option>
+
+
+
+                <option value="Medium"
+                {% if request.GET.priority == "Medium" %}selected{% endif %}>
+                    Medium
+                </option>
+
+
+
+                <option value="High"
+                {% if request.GET.priority == "High" %}selected{% endif %}>
+                    High
+                </option>
+
+
+
+                <option value="Critical"
+                {% if request.GET.priority == "Critical" %}selected{% endif %}>
+                    Critical
+                </option>
+
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="col-md-3">
+
+
+            <select name="assigned" class="form-select">
+
+
+                <option value="">
+                    All Users
+                </option>
+
+
+
+                {% for user in users %}
+
+
+                <option value="{{ user.id }}"
+                {% if request.GET.assigned == user.id|stringformat:"s" %}selected{% endif %}>
+
+                    {{ user.username }}
+
+                </option>
+
+
+
+                {% endfor %}
+
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="col-md-2">
+
+
+            <button type="submit"
+            class="btn btn-primary w-100">
+
+                Search
+
+            </button>
+
+
+        </div>
+
+
+
+    </form>
+
+
+
+
+
+
+
+
+
+{% if tasks %}
+
+
+
+<div class="card shadow">
+
+
+<div class="card-body">
+
+
+<table class="table table-bordered table-hover text-center">
+
+
+<thead class="table-dark">
+
+
+<tr>
+
+<th>Title</th>
+<th>Sprint</th>
+<th>Assigned User</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Due Date</th>
+<th>Actions</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+<tbody>
+
+
+{% for task in tasks %}
+
+
+
+<tr>
+
+
+<td>
+{{ task.title }}
+</td>
+
+
+
+<td>
+{{ task.sprint }}
+</td>
+
+
+
+<td>
+{{ task.assigned_to }}
+</td>
+
+
+
+
+<td>
+
+<span class="badge bg-success">
+
+{{ task.status }}
+
+</span>
+
+
+</td>
+
+
+
+
+
+<td>
+
+{{ task.priority }}
+
+</td>
+
+
+
+
+
+<td>
+
+{{ task.due_date }}
+
+</td>
+
+
+
+
+
+<td>
+
+
+
+<a href="{% url 'task_detail' task.id %}"
+class="btn btn-info btn-sm">
+
+View
+
+</a>
+
+
+
+
+<a href="{% url 'update_task' task.id %}"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+
+
+
+
+<a href="{% url 'delete_task' task.id %}"
+class="btn btn-danger btn-sm">
+
+Delete
+
+</a>
+
+
+
+</td>
+
+
+
+</tr>
+
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Pagination -->
+
+
+<nav class="mt-4">
+
+
+<ul class="pagination justify-content-center">
+
+
+
+{% if tasks.has_previous %}
+
+
+<li class="page-item">
+
+
+<a class="page-link"
+href="?page={{ tasks.previous_page_number }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&assigned={{ request.GET.assigned }}">
+
+Previous
+
+</a>
+
+
+</li>
+
+
+{% else %}
+
+
+<li class="page-item disabled">
+
+<span class="page-link">
+
+Previous
+
+</span>
+
+</li>
+
+
+{% endif %}
+
+
+
+
+
+
+
+{% for num in tasks.paginator.page_range %}
+
+
+
+{% if tasks.number == num %}
+
+
+<li class="page-item active">
+
+
+<span class="page-link">
+
+{{ num }}
+
+</span>
+
+
+</li>
+
+
+{% else %}
+
+
+<li class="page-item">
+
+
+<a class="page-link"
+href="?page={{ num }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&assigned={{ request.GET.assigned }}">
+
+
+{{ num }}
+
+
+</a>
+
+
+</li>
+
+
+{% endif %}
+
+
+
+{% endfor %}
+
+
+
+
+
+
+
+
+{% if tasks.has_next %}
+
+
+<li class="page-item">
+
+
+<a class="page-link"
+href="?page={{ tasks.next_page_number }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&assigned={{ request.GET.assigned }}">
+
+
+Next
+
+
+</a>
+
+
+</li>
+
+
+
+{% else %}
+
+
+
+<li class="page-item disabled">
+
+
+<span class="page-link">
+
+Next
+
+</span>
+
+
+</li>
+
+
+{% endif %}
+
+
+
+
+</ul>
+
+
+</nav>
+
+
+
+
+
+
+
+{% else %}
+
+
+
+
+<div class="alert alert-warning text-center mt-4">
+
+
+<h5>No Tasks Found</h5>
+
+
+<p>
+Try another search keyword or change filters.
+</p>
+
+
+</div>
+
+
+
+{% endif %}
+
+
+
+
+
+
+</div>
+
 
 {% endblock %}

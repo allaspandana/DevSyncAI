@@ -1,16 +1,57 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.db.models import Q
+from django.core.paginator import Paginator
+from django.contrib.auth import get_user_model
 from .models import Bug
 from .forms import BugForm
 
-
+User = get_user_model()
 @login_required
 def bug_list(request):
-    bugs = Bug.objects.all()
-    return render(request, 'bugs/bug_list.html', {'bugs': bugs})
 
+    bugs = Bug.objects.all()
+
+    search = request.GET.get('search')
+    severity = request.GET.get('severity')
+    status = request.GET.get('status')
+    assigned = request.GET.get('assigned')
+
+    # Search by title or description
+    if search:
+        bugs = bugs.filter(
+            Q(title__icontains=search) |
+            Q(description__icontains=search)
+        )
+
+    # Filter by severity
+    if severity:
+        bugs = bugs.filter(severity=severity)
+
+    # Filter by status
+    if status:
+        bugs = bugs.filter(status=status)
+
+    # Filter by assigned developer
+    if assigned:
+        bugs = bugs.filter(assigned_to__id=assigned)
+
+    # Pagination
+    paginator = Paginator(bugs, 10)
+    page = request.GET.get('page')
+    bugs = paginator.get_page(page)
+
+    context = {
+        'bugs': bugs,
+        'search': search,
+        'severity': severity,
+        'status': status,
+        'assigned': assigned,
+        'users': User.objects.all(),
+    }
+
+    return render(request, 'bugs/bug_list.html', context)
 
 @login_required
 def create_bug(request):

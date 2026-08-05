@@ -12,6 +12,14 @@ def project_list(request):
     projects = Project.objects.all()
 
     search = request.GET.get('search')
+    status = request.GET.get('status')
+    priority = request.GET.get('priority')
+
+    if status:
+        projects = projects.filter(status=status)
+
+    if priority:
+        projects = projects.filter(priority=priority)
 
     if search:
         projects = projects.filter(
