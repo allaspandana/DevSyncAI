@@ -17,6 +17,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
+
+def permission_denied_view(request, exception=None):
+    return render(request, "errors/403.html", status=403)
+
+
+handler403 = "config.urls.permission_denied_view"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("accounts.urls")),

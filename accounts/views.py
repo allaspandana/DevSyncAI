@@ -104,9 +104,26 @@ def logout_view(request):
     )
 
     return redirect("login")
+@login_required
 def profile(request):
-    return render(request, "profile/profile.html")
 
+    user = request.user
+
+
+    context = {
+
+        'task_count': user.assigned_tasks.count(),
+
+        'bug_count': user.assigned_bugs.count()
+
+    }
+
+
+    return render(
+        request,
+        'accounts/profile.html',
+        context
+    )
 def home(request):
     return render(request, "home.html")
 @login_required(login_url="login")

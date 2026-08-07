@@ -12,18 +12,9 @@
         <a href="{% url 'create_project' %}" class="btn btn-primary">
             Create Project
         </a>
-
     </div>
-
-
-
-    <!-- Search & Filter Form -->
-
     <form method="GET" class="row g-3 mb-4">
-
-
         <div class="col-md-4">
-
             <input
                 type="text"
                 name="search"
@@ -32,59 +23,35 @@
                 value="{{ request.GET.search }}">
 
         </div>
-
-
-
         <div class="col-md-3">
-
             <select name="status" class="form-select">
-
                 <option value="">
                     All Status
                 </option>
-
-
                 <option value="Planning"
                 {% if request.GET.status == "Planning" %}selected{% endif %}>
                     Planning
                 </option>
-
-
                 <option value="In Progress"
                 {% if request.GET.status == "In Progress" %}selected{% endif %}>
                     In Progress
                 </option>
-
-
                 <option value="Completed"
                 {% if request.GET.status == "Completed" %}selected{% endif %}>
                     Completed
                 </option>
-
-
                 <option value="On Hold"
                 {% if request.GET.status == "On Hold" %}selected{% endif %}>
                     On Hold
                 </option>
 
-
             </select>
-
         </div>
-
-
-
-
         <div class="col-md-3">
-
             <select name="priority" class="form-select">
-
-
                 <option value="">
                     All Priority
                 </option>
-
-
                 <option value="Low"
                 {% if request.GET.priority == "Low" %}selected{% endif %}>
                     Low
@@ -227,24 +194,9 @@
 
 
             </tr>
-
-
         {% endfor %}
-
-
         </tbody>
-
-
     </table>
-
-
-
-
-
-
-    <!-- Pagination -->
-
-
     <nav>
 
         <ul class="pagination justify-content-center">
@@ -257,38 +209,17 @@
 
                 <a class="page-link"
                 href="?page={{ projects.previous_page_number }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">
-
                     Previous
-
                 </a>
-
             </li>
-
-
             {% else %}
-
-
             <li class="page-item disabled">
-
                 <span class="page-link">
-
                     Previous
-
                 </span>
-
             </li>
-
-
             {% endif %}
-
-
-
-
-
             {% for num in projects.paginator.page_range %}
-
-
-
                 {% if projects.number == num %}
 
 
@@ -300,42 +231,18 @@
                         {{ num }}
 
                     </span>
-
-
                 </li>
-
-
-
                 {% else %}
-
-
-
                 <li class="page-item">
-
 
                     <a class="page-link"
                     href="?page={{ num }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">
-
                         {{ num }}
-
                     </a>
-
-
                 </li>
-
-
-
                 {% endif %}
 
-
-
             {% endfor %}
-
-
-
-
-
-
             {% if projects.has_next %}
 
 
@@ -348,16 +255,8 @@
                     Next
 
                 </a>
-
-
             </li>
-
-
-
             {% else %}
-
-
-
             <li class="page-item disabled">
 
 
@@ -366,52 +265,18 @@
                     Next
 
                 </span>
-
-
             </li>
-
-
-
             {% endif %}
-
-
-
-
         </ul>
-
-
     </nav>
-
-
-
-
-
-
-
     {% else %}
-
-
-
     <div class="alert alert-warning text-center mt-4">
-
-
         <h5>No Projects Found</h5>
-
-
         <p>
             Try searching with another keyword or change filters.
         </p>
-
-
     </div>
-
-
-
     {% endif %}
-
-
-
-
 </div>
 
 

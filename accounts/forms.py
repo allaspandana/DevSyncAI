@@ -1,25 +1,49 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
 
-class RegisterForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
+
         fields = [
             "username",
             "email",
             "phone_number",
             "role",
-            "profile_picture",
+            "password1",
+            "password2"
         ]
 
+        widgets = {
 
-class LoginForm(AuthenticationForm):
+            "username": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Username"
+                }
+            ),
 
-    username = forms.CharField()
+            "email": forms.EmailInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Email"
+                }
+            ),
 
-    password = forms.CharField(
-        widget=forms.PasswordInput
-    )
+            "phone_number": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Phone Number"
+                }
+            ),
+
+            "role": forms.Select(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+        }

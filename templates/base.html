@@ -5,26 +5,34 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>DevSyncAI</title>
-
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-    <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<title>DevSyncAI</title>
 
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Bootstrap CSS -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+<!-- Bootstrap Icons -->
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<!-- Custom CSS -->
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
 </head>
@@ -33,7 +41,7 @@
 <body>
 
 
-<!-- ===================== NAVBAR ===================== -->
+<!-- ================= NAVBAR ================= -->
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
@@ -53,9 +61,9 @@ DevSyncAI
 
 
 <button class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarMenu">
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#navbarMenu">
 
 <span class="navbar-toggler-icon"></span>
 
@@ -67,39 +75,78 @@ DevSyncAI
 
 
 <ul class="navbar-nav ms-auto">
-   <li class="nav-item">
-        <a class="nav-link" href="{% url 'home' %}">
-           <i class="fa-solid fa-house"></i> Home
-        </a>
-    </li>
+
+
+<!-- Public Links -->
+
+
+<li class="nav-item">
+
+<a class="nav-link" href="{% url 'home' %}">
+
+<i class="fa-solid fa-house"></i>
+
+Home
+
+</a>
+
+</li>
+
+
+
 <li class="nav-item">
 
 <a class="nav-link" href="#">
 
 <i class="bi bi-info-circle-fill"></i>
+
 About
+
 </a>
+
 </li>
+
+
+
 <li class="nav-item">
+
 <a class="nav-link" href="#">
+
 <i class="bi bi-envelope-fill"></i>
+
 Contact
+
 </a>
-</li>
-<li class="nav-item">
-
-    <a class="nav-link" href="{% url 'profile' %}">
-
-        <i class="bi bi-person-circle"></i>
-        Profile
-
-    </a>
 
 </li>
+
+
 
 
 {% if user.is_authenticated %}
 
+
+
+
+<!-- Profile -->
+
+
+<li class="nav-item">
+
+<a class="nav-link" href="{% url 'profile' %}">
+
+<i class="bi bi-person-circle"></i>
+
+Profile
+
+</a>
+
+</li>
+
+
+
+
+<!-- Dashboard -->
 
 
 <li class="nav-item">
@@ -107,6 +154,7 @@ Contact
 <a class="nav-link" href="{% url 'dashboard' %}">
 
 <i class="bi bi-speedometer2"></i>
+
 Dashboard
 
 </a>
@@ -115,11 +163,20 @@ Dashboard
 
 
 
+
+
+<!-- ================= ADMIN ================= -->
+
+
+{% if user.role == 'ADMIN' %}
+
+
 <li class="nav-item">
 
 <a class="nav-link" href="{% url 'team_list' %}">
 
 <i class="bi bi-people-fill"></i>
+
 Teams
 
 </a>
@@ -127,12 +184,26 @@ Teams
 </li>
 
 
+{% endif %}
+
+
+
+
+
+
+
+<!-- ================= ADMIN + LEADER ================= -->
+
+
+{% if user.role == 'ADMIN' or user.role == 'LEADER' %}
+
 
 <li class="nav-item">
 
 <a class="nav-link" href="{% url 'project_list' %}">
 
 <i class="bi bi-kanban-fill"></i>
+
 Projects
 
 </a>
@@ -146,6 +217,7 @@ Projects
 <a class="nav-link" href="{% url 'sprint_list' %}">
 
 <i class="bi bi-calendar-week-fill"></i>
+
 Sprints
 
 </a>
@@ -153,14 +225,27 @@ Sprints
 </li>
 
 
+{% endif %}
 
-<!-- Task Module Added -->
+
+
+
+
+
+
+
+<!-- ================= TASKS ================= -->
+
+
+{% if user.role == 'ADMIN' or user.role == 'LEADER' or user.role == 'DEVELOPER' %}
+
 
 <li class="nav-item">
 
 <a class="nav-link" href="{% url 'task_list' %}">
 
 <i class="bi bi-list-check"></i>
+
 Tasks
 
 </a>
@@ -168,43 +253,122 @@ Tasks
 </li>
 
 
+{% endif %}
+
+
+
+
+
+
+
+
+<!-- ================= BUGS ================= -->
+
+
+{% if user.role == 'ADMIN' or user.role == 'LEADER' or user.role == 'DEVELOPER' or user.role == 'TESTER' %}
+
 
 <li class="nav-item">
 
 <a class="nav-link" href="{% url 'bug_list' %}">
 
-<i class="bi bi-bug"></i>
+<i class="bi bi-bug-fill"></i>
+
 Bugs
 
 </a>
 
+</li>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+<!-- ================= CREATE BUG ================= -->
+
+
+{% if user.role == 'ADMIN' or user.role == 'TESTER' or user.role == 'DEVELOPER' %}
+
+
 <li class="nav-item">
 
-    <a class="nav-link" href="{% url 'notification_list' %}">
+<a class="nav-link" href="{% url 'create_bug' %}">
 
-        <i class="bi bi-bell"></i>
+<i class="bi bi-plus-circle"></i>
 
-        Notifications ({{ unread_notification_count }})
+Create Bug
 
-    </a>
+</a>
 
 </li>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+<!-- Notifications -->
+
+
 <li class="nav-item">
 
-    <a class="nav-link" href="{% url 'activity_list' %}">
+<a class="nav-link" href="{% url 'notification_list' %}">
 
-        <i class="bi bi-clock-history"></i>
-        Activity
+<i class="bi bi-bell"></i>
 
-    </a>
+Notifications ({{ unread_notification_count }})
+
+</a>
 
 </li>
+
+
+
+
+
+
+
+<!-- Activity -->
+
+
+<li class="nav-item">
+
+<a class="nav-link" href="{% url 'activity_list' %}">
+
+<i class="bi bi-clock-history"></i>
+
+Activity
+
+</a>
+
+</li>
+
+
+
+
+
+
+
+<!-- Logout -->
+
 
 <li class="nav-item">
 
 <a class="nav-link" href="{% url 'logout' %}">
 
 <i class="bi bi-box-arrow-right"></i>
+
 Logout
 
 </a>
@@ -213,8 +377,14 @@ Logout
 
 
 
+
+
 {% else %}
 
+
+
+
+<!-- Login -->
 
 
 <li class="nav-item">
@@ -222,6 +392,7 @@ Logout
 <a class="nav-link" href="{% url 'login' %}">
 
 <i class="bi bi-box-arrow-in-right"></i>
+
 Login
 
 </a>
@@ -230,16 +401,24 @@ Login
 
 
 
+
+
+
+<!-- Register -->
+
+
 <li class="nav-item">
 
 <a class="nav-link" href="{% url 'register' %}">
 
 <i class="bi bi-person-plus-fill"></i>
+
 Register
 
 </a>
 
 </li>
+
 
 
 {% endif %}
@@ -260,7 +439,9 @@ Register
 
 
 
-<!-- ===================== MESSAGES ===================== -->
+
+
+<!-- ================= MESSAGES ================= -->
 
 
 <div class="container mt-4">
@@ -279,8 +460,8 @@ Register
 
 
 <button type="button"
-        class="btn-close"
-        data-bs-dismiss="alert">
+class="btn-close"
+data-bs-dismiss="alert">
 
 </button>
 
@@ -300,7 +481,9 @@ Register
 
 
 
-<!-- ===================== PAGE CONTENT ===================== -->
+
+
+<!-- ================= CONTENT ================= -->
 
 
 <div class="container mt-4">
@@ -318,7 +501,10 @@ Register
 
 
 
-<!-- ===================== FOOTER ===================== -->
+
+
+
+<!-- ================= FOOTER ================= -->
 
 
 <footer class="bg-dark text-white text-center py-3 mt-5">
@@ -337,6 +523,8 @@ Register
 
 
 
+
+
 <!-- Bootstrap JS -->
 
 
@@ -345,6 +533,5 @@ Register
 
 
 </body>
-
 
 </html>

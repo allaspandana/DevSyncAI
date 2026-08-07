@@ -1,29 +1,39 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+
 class CustomUser(AbstractUser):
 
-    ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Team Leader', 'Team Leader'),
-        ('Developer', 'Developer'),
-        ('Tester', 'Tester'),
-    ]
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15)
+    ROLE_CHOICES = (
 
-    profile_picture = models.ImageField(
-        upload_to='profile_pictures/',
-        blank=True,
-        null=True
+        ('ADMIN', 'Admin'),
+        ('LEADER', 'Team Leader'),
+        ('DEVELOPER', 'Developer'),
+        ('TESTER', 'Tester'),
+
     )
+
 
     role = models.CharField(
         max_length=20,
         choices=ROLE_CHOICES,
-        default='Developer'
+        default='DEVELOPER'
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+
+    phone = models.CharField(
+        max_length=15,
+        blank=True,
+        null=True
+    )
+
+
+    profile_image = models.ImageField(
+        upload_to='profiles/',
+        blank=True,
+        null=True
+    )
+
 
     def __str__(self):
         return self.username

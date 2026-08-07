@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
 from .models import Team
 from .forms import TeamForm
 
+from accounts.decorators import admin_required
 
 
+# ==========================
 # Team List
+# ==========================
 
 @login_required
 def team_list(request):
@@ -22,11 +25,11 @@ def team_list(request):
     )
 
 
-
-
+# ==========================
 # Create Team
+# ==========================
 
-@login_required
+@admin_required
 def create_team(request):
 
     if request.method == "POST":
@@ -37,36 +40,28 @@ def create_team(request):
 
             form.save()
 
-            messages.success(
-                request,
-                "Team created successfully."
-            )
-
             return redirect('team_list')
-
 
     else:
 
         form = TeamForm()
 
 
-
     return render(
         request,
         'teams/create_team.html',
         {
-            'form':form
+            'form': form
         }
     )
 
 
-
-
-
+# ==========================
 # Team Detail
+# ==========================
 
 @login_required
-def team_detail(request,id):
+def team_detail(request, id):
 
     team = get_object_or_404(
         Team,
@@ -78,19 +73,17 @@ def team_detail(request,id):
         request,
         'teams/team_detail.html',
         {
-            'team':team
+            'team': team
         }
     )
 
 
-
-
-
-
+# ==========================
 # Update Team
+# ==========================
 
-@login_required
-def update_team(request,id):
+@admin_required
+def update_team(request, id):
 
     team = get_object_or_404(
         Team,
@@ -110,15 +103,7 @@ def update_team(request,id):
 
             form.save()
 
-
-            messages.success(
-                request,
-                "Team updated successfully."
-            )
-
-
             return redirect('team_list')
-
 
 
     else:
@@ -128,26 +113,22 @@ def update_team(request,id):
         )
 
 
-
     return render(
         request,
         'teams/update_team.html',
         {
-            'form':form,
-            'team':team
+            'form': form,
+            'team': team
         }
     )
 
 
-
-
-
-
-
+# ==========================
 # Delete Team
+# ==========================
 
-@login_required
-def delete_team(request,id):
+@admin_required
+def delete_team(request, id):
 
     team = get_object_or_404(
         Team,
@@ -159,21 +140,13 @@ def delete_team(request,id):
 
         team.delete()
 
-
-        messages.success(
-            request,
-            "Team deleted successfully."
-        )
-
-
         return redirect('team_list')
-
 
 
     return render(
         request,
         'teams/delete_team.html',
         {
-            'team':team
+            'team': team
         }
     )

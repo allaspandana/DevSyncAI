@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [ "devsync-09vi.onrender.com",
     "localhost",
     "127.0.0.1",]
-
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 CSRF_TRUSTED_ORIGINS = [
     "https://devsync-09vi.onrender.com",
 ]

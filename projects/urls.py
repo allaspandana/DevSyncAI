@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.views.generic import TemplateView
 
 urlpatterns = [
 
@@ -12,5 +13,11 @@ urlpatterns = [
     path('<int:id>/edit/', views.update_project, name='update_project'),
 
     path('<int:id>/delete/', views.delete_project, name='delete_project'),
-
+ path(
+        'access-denied/',
+        TemplateView.as_view(
+            template_name='errors/403.html'
+        ),
+        name='access_denied'
+    ),
 ]

@@ -1,44 +1,83 @@
 from django import forms
 from .models import Bug
 
+
 class BugForm(forms.ModelForm):
 
     class Meta:
+
         model = Bug
 
         fields = [
-            'task',
-            'assigned_to',
-            'title',
-            'description',
-            'severity',
-            'priority',
-            'status',
-            'resolved_date'
+            "task",
+            "assigned_to",
+            "title",
+            "description",
+            "severity",
+            "priority",
+            "status",
+            "resolved_date",
         ]
 
+
         widgets = {
-            'resolved_date': forms.DateInput(attrs={'type': 'date'}),
+
+            "title": forms.TextInput(
+                attrs={
+                    "class":"form-control",
+                    "placeholder":"Enter bug title"
+                }
+            ),
+
+
+            "description": forms.Textarea(
+                attrs={
+                    "class":"form-control",
+                    "rows":4,
+                    "placeholder":"Describe the bug"
+                }
+            ),
+
+
+            "severity": forms.Select(
+                attrs={
+                    "class":"form-select"
+                }
+            ),
+
+
+            "priority": forms.Select(
+                attrs={
+                    "class":"form-select"
+                }
+            ),
+
+
+            "status": forms.Select(
+                attrs={
+                    "class":"form-select"
+                }
+            ),
+
+
+            "task": forms.Select(
+                attrs={
+                    "class":"form-select"
+                }
+            ),
+
+
+            "assigned_to": forms.Select(
+                attrs={
+                    "class":"form-select"
+                }
+            ),
+
+
+            "resolved_date": forms.DateInput(
+                attrs={
+                    "class":"form-control",
+                    "type":"date"
+                }
+            ),
         }
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        title = cleaned_data.get("title")
-        task = cleaned_data.get("task")
-        status = cleaned_data.get("status")
-        resolved_date = cleaned_data.get("resolved_date")
-
-        if not title:
-            self.add_error("title", "Title cannot be empty.")
-
-        if not task:
-            self.add_error("task", "Task is required.")
-
-        if status in ["Resolved", "Closed"] and not resolved_date:
-            self.add_error(
-                "resolved_date",
-                "Resolved date is required."
-            )
-
-        return cleaned_data
